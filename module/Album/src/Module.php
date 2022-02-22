@@ -6,9 +6,7 @@ use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\TableGateway\TableGateway;
 use Laminas\ModuleManager\Feature\ConfigProviderInterface;
-use Model\Album;
-use Model\AlbumTable;
-use Model\AlbumTableGateway;
+
 class Module implements ConfigProviderInterface
 {
     public function getConfig()
@@ -20,14 +18,14 @@ class Module implements ConfigProviderInterface
      {
          return [
              'factories' => [
-                 AlbumTable::class => function($container) {
-                     $tableGateway = $container->get(AlbumTableGateway::class);
-                     return new AlbumTable($tableGateway);
+                 Model\AlbumTable::class => function($container) {
+                     $tableGateway = $container->get(Model\AlbumTableGateway::class);
+                     return new Model\AlbumTable($tableGateway);
                  },
-                 AlbumTableGateway::class => function ($container) {
+                 Model\AlbumTableGateway::class => function ($container) {
                      $dbAdapter = $container->get(AdapterInterface::class);
                      $resultSetPrototype = new ResultSet();
-                     $resultSetPrototype->setArrayObjectPrototype(new Album());
+                     $resultSetPrototype->setArrayObjectPrototype(new Model\Album());
                      return new TableGateway('album', $dbAdapter, null, $resultSetPrototype);
                  },
              ],
@@ -40,7 +38,7 @@ class Module implements ConfigProviderInterface
             'factories' => [
                 Controller\AlbumController::class => function($container) {
                     return new Controller\AlbumController(
-                        $container->get(AlbumTable::class)
+                        $container->get(Model\AlbumTable::class)
                     );
                 },
             ],

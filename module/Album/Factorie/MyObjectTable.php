@@ -1,6 +1,6 @@
 <?php
  
-namespace Album;
+ namespace MyObjectTable\Factorie;
 
 class MyObjectTable{
 
