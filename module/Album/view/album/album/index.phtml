@@ -26,3 +26,21 @@ $this->headTitle($title);
     </tr>
 <?php endforeach; ?>
 </table>
+
+<table class="table">
+<tr>
+    <th>nome</th>
+    <th>matricula</th>
+    <th>&nbsp;</th>
+</tr>
+<?php foreach ($cantor as $aux) : ?>
+    <tr>
+        <td><?= $this->escapeHtml($aux->title) ?></td>
+        <td><?= $this->escapeHtml($aux->artist) ?></td>
+        <td>
+            <a href="<?= $this->url('album', ['action' => 'edit', 'id' => $aux->id]) ?>">Edit</a>
+            <a href="<?= $this->url('album', ['action' => 'delete', 'id' => $aux->id]) ?>">Delete</a>
+        </td>
+    </tr>
+<?php endforeach; ?>
+</table>

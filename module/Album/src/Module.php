@@ -6,6 +6,7 @@ use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\ResultSet\ResultSet;
 use Laminas\Db\TableGateway\TableGateway;
 use Laminas\ModuleManager\Feature\ConfigProviderInterface;
+use MyObject\Factorie;
 
 class Module implements ConfigProviderInterface
 {
@@ -28,6 +29,16 @@ class Module implements ConfigProviderInterface
                      $resultSetPrototype->setArrayObjectPrototype(new Model\Album());
                      return new TableGateway('album', $dbAdapter, null, $resultSetPrototype);
                  },
+                 Model\CantorTable::class => function($container) {
+                    $tableGateway = $container->get(Model\CantorTableGateway::class);
+                    return new Model\CantorTable($tableGateway);
+                },
+                Model\CantorTableGateway::class => function ($container) {
+                    $dbAdapter = $container->get(AdapterInterface::class);
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Model\Cantor());
+                    return new TableGateway('cantor', $dbAdapter, null, $resultSetPrototype);
+                },
              ],
          ];
      }
@@ -38,7 +49,7 @@ class Module implements ConfigProviderInterface
             'factories' => [
                 Controller\AlbumController::class => function($container) {
                     return new Controller\AlbumController(
-                        $container->get(Model\AlbumTable::class)
+                        $container->get(Model\AlbumTable::class), $container->get(Model\CantorTable::class)
                     );
                 },
             ],
